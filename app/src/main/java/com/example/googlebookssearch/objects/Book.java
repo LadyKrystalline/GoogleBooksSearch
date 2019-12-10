@@ -1,4 +1,4 @@
-package com.example.googlebookssearch;
+package com.example.googlebookssearch.objects;
 
 import android.support.annotation.NonNull;
 
