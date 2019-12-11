@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">GoogleBooksSearch</string>
+
+    <string name="emptyStateDescription">List is Empty.</string>
+    <string name="noQueriesText">Please select a query from the dropdown menu above to view a
+        list of results.</string>
+
+
 </resources>
