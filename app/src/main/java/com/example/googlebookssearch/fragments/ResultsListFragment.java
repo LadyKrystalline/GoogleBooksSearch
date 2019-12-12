@@ -35,6 +35,7 @@ public class ResultsListFragment extends ListFragment {
         if (getArguments() != null){
             //TODO: will need a custom listView Item Adapter to populate the ListView
 
+
         }
     }
 }

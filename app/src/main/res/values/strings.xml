@@ -5,5 +5,21 @@
     <string name="noQueriesText">Please select a query from the dropdown menu above to view a
         list of results.</string>
 
+    <!--Spinner has pre-defined queries-->
+
+    <string-array name="queryArray">
+        <item>@string/firstQuery</item>
+        <item>@string/secondQuery</item>
+        <item>@string/thirdQuery</item>
+        <item>@string/fourthQuery</item>
+        <item>@string/fifthQuery</item>
+    </string-array>
+
+    <!--Strings for the pre-defined queries-->
+    <string name="firstQuery">Calculus</string>
+    <string name="secondQuery">Corgis</string>
+    <string name="thirdQuery">Kickboxing</string>
+    <string name="fourthQuery">Music Theory</string>
+    <string name="fifthQuery">Smartphones</string>
 
 </resources>
