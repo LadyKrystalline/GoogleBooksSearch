@@ -1,14 +1,19 @@
 package com.example.googlebookssearch;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.googlebookssearch.data.FetchBooks;
 import com.example.googlebookssearch.fragments.LoadingFragment;
+import com.example.googlebookssearch.fragments.ResultsListFragment;
 import com.example.googlebookssearch.objects.Book;
 
 import java.io.File;
@@ -56,21 +61,39 @@ public class MainActivity extends AppCompatActivity
     //FetchBooks.SearchListener required methods
     @Override
     public void OnResult(ArrayList<Book> books) {
-
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.listLayout, ResultsListFragment.newInstance(books)).commit();
     }
 
     @Override
-    public void ShowMessage(String message) {
-
+    public void ShowMessage(final String message) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
-    public boolean hasConnection() {
-        return false;
+    public boolean hasConnection(){
+        boolean isConnected = false; //no connection until the below conditions are met
+
+        ConnectivityManager mgr =
+                (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (mgr != null){
+            NetworkInfo info = mgr.getActiveNetworkInfo(); //permission to access network state
+            if(info != null){
+                isConnected = info.isConnected();
+            }
+        }
+        return isConnected;
+
     }
 
     @Override
     public File getCacheDirectory() {
-        return null;
+        return getCacheDir();
     }
 }

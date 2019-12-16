@@ -8,4 +8,23 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="yearTextStyle">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="titleTextStyle">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">serif</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="authorTextStyle">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

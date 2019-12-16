@@ -22,4 +22,9 @@
     <string name="fourthQuery">Music Theory</string>
     <string name="fifthQuery">Smartphones</string>
 
+    <string name="loading">Loading. Please wait…</string>
+    <string name="authorTextViewDescription">Book Author</string>
+    <string name="titleTextViewDescription">Book Title</string>
+    <string name="yearTextViewDescription">Date Published</string>
+
 </resources>
