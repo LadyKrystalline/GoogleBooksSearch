@@ -6,11 +6,14 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.example.googlebookssearch.R;
 import com.example.googlebookssearch.objects.Book;
+import com.example.googlebookssearch.objects.BookAdapter;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ResultsListFragment extends ListFragment {
     private static final String ARG_BOOKS = "ARG_BOOKS";
@@ -33,7 +36,15 @@ public class ResultsListFragment extends ListFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (getArguments() != null){
-            //TODO: will need a custom listView Item Adapter to populate the ListView
+            //This is a custom listView Item Adapter to populate the ListView
+            BookAdapter adapter = new BookAdapter(getContext(),
+                    (ArrayList<Book>) Objects.requireNonNull(getArguments().getSerializable(ARG_BOOKS)));
+            setListAdapter(adapter);
+            adapter.notifyDataSetChanged();
+            ListView lv = getListView();
+            lv.setDivider(Objects.requireNonNull(getActivity())
+                    .getResources().getDrawable(R.color.colorPrimaryDark));
+            lv.setDividerHeight(2);
 
 
         }
