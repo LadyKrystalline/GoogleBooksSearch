@@ -62,6 +62,7 @@ public class BookAdapter extends BaseAdapter {
 
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.list_item_view, parent, false);
+            convertView.setBackgroundResource(R.drawable.background_view);
             holder = new BookAdapter.ViewHolder();
             holder.titleView = convertView.findViewById(R.id.titleTextView);
             holder.authorView = convertView.findViewById(R.id.authorTextView);

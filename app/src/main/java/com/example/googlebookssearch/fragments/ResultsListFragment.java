@@ -43,8 +43,8 @@ public class ResultsListFragment extends ListFragment {
             adapter.notifyDataSetChanged();
             ListView lv = getListView();
             lv.setDivider(Objects.requireNonNull(getActivity())
-                    .getResources().getDrawable(R.color.colorPrimaryDark));
-            lv.setDividerHeight(2);
+                    .getResources().getDrawable(R.color.colorWhite));
+            lv.setDividerHeight(20);
 
 
         }
