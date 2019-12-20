@@ -131,14 +131,17 @@ class DataUtils {
                     //TITLE: JSON String from a JSON object
                     String title = volumeInfo.getString("title");
 
-                    //AUTHOR: JSON String from a JSON object
+                    //AUTHOR: JSON Array from a JSON object
                     JSONArray authors = volumeInfo.getJSONArray("authors");
 
                     //PUBLISHED DATE: JSON String from a JSON object
                     String publishedDate = volumeInfo.getString("publishedDate");
 
+                    //COVER THUMBNAIL: JSON Array from a JSON object
+                    JSONArray imageLinks = volumeInfo.getJSONArray("imageLinks");
+
                     //create Book from JSON
-                    books.add(new Book(title, authors.getString(0), publishedDate));
+                    books.add(new Book(coverImage, title, authors.getString(0), publishedDate));
 
                 } catch (Exception e){
                     e.printStackTrace();

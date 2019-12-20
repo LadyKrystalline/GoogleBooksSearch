@@ -6,10 +6,16 @@ import java.io.Serializable;
 
 //This is a custom class, which represents a Book listing in the Google Books API.
 public class Book implements Serializable {
-    //Each Book object has: a title, author and publish Date.
+
+    //Each Book object has: a cover image, title, author and publish Date.
+    private final String coverImage;
     private final String title;
     private final String author;
     private final String publishDate;
+
+    public String getCoverImage() {
+        return coverImage;
+    }
 
     public String getTitle() {
         return title;
@@ -23,7 +29,8 @@ public class Book implements Serializable {
         return publishDate;
     }
 
-    public Book(String title, String author, String publishDate) {
+    public Book(String coverImage, String title, String author, String publishDate) {
+        this.coverImage = coverImage;
         this.title = title;
         this.author = author;
         this.publishDate = publishDate;
