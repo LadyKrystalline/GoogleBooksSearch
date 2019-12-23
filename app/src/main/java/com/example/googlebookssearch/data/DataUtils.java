@@ -138,10 +138,12 @@ class DataUtils {
                     String publishedDate = volumeInfo.getString("publishedDate");
 
                     //COVER THUMBNAIL: JSON Array from a JSON object
-                    JSONArray imageLinks = volumeInfo.getJSONArray("imageLinks");
+                    JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
+                    String coverImage = imageLinks.getString("smallThumbnail");
 
                     //create Book from JSON
-                    books.add(new Book(coverImage, title, authors.getString(0), publishedDate));
+                    books.add(new Book(coverImage, title,
+                            authors.getString(0), publishedDate));
 
                 } catch (Exception e){
                     e.printStackTrace();

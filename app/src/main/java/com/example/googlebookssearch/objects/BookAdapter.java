@@ -1,6 +1,7 @@
 package com.example.googlebookssearch.objects;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class BookAdapter extends BaseAdapter {
 
+    private static final String TAG = "BookAdapter";
     private final List<Book> list;
     private final LayoutInflater mInflater;
 
@@ -77,6 +79,7 @@ public class BookAdapter extends BaseAdapter {
         holder.titleView.setText(book.getTitle());
         holder.authorView.setText(book.getAuthor());
         holder.yearView.setText(book.getPublishDate());
+        Log.d(TAG, "getView: " + book.getCoverImage());
 
         return convertView;
     }
