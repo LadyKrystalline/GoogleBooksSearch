@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/coverImage"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:contentDescription="@string/coverImageDescription"
         app:srcCompat="@color/colorAccent" />
@@ -21,10 +21,10 @@
         <TextView
             android:id="@+id/yearTextView"
             style="@style/yearTextStyle"
-            android:gravity="end"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/yearTextViewDescription" />
+            android:contentDescription="@string/yearTextViewDescription"
+            android:gravity="end" />
 
         <TextView
             android:id="@+id/titleTextView"
