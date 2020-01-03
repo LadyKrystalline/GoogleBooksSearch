@@ -27,5 +27,6 @@
     <string name="titleTextViewDescription">Book Title</string>
     <string name="yearTextViewDescription">Date Published</string>
     <string name="coverImageDescription">cover image</string>
+    <string name="coverimageviewDescription">coverImageView</string>
 
 </resources>

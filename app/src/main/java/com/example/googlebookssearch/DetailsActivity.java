@@ -34,12 +34,7 @@ public class DetailsActivity extends AppCompatActivity {
 
                 showDetails();
             }
-
-
         }
-
-
-
     }
 
     private void showDetails() {

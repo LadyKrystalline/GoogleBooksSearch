@@ -12,6 +12,8 @@ public class Book implements Serializable {
     private final String title;
     private final String author;
     private final String publishDate;
+    private final String description;
+
 
     public String getCoverImage() {
         return coverImage;
@@ -29,11 +31,16 @@ public class Book implements Serializable {
         return publishDate;
     }
 
-    public Book(String coverImage, String title, String author, String publishDate) {
+    public String getDescription() {
+        return description;
+    }
+
+    public Book(String coverImage, String title, String author, String publishDate, String description) {
         this.coverImage = coverImage;
         this.title = title;
         this.author = author;
         this.publishDate = publishDate;
+        this.description = description;
     }
 
     @NonNull

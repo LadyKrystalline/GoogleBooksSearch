@@ -91,7 +91,7 @@ public class BookAdapter extends BaseAdapter {
 
         //RequestOptions formats the imageView for the cover image
         RequestOptions options = new RequestOptions()
-                .centerCrop()
+                .fitCenter()
                 .placeholder(R.mipmap.ic_launcher_round)
                 .error(R.color.colorAccent);
 
@@ -105,7 +105,6 @@ public class BookAdapter extends BaseAdapter {
         holder.authorView.setText(book.getAuthor());
         holder.yearView.setText(book.getPublishDate());
         Log.d(TAG, "getView: " + book.getCoverImage());
-
         return convertView;
     }
 }

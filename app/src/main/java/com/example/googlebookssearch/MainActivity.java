@@ -4,12 +4,13 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.googlebookssearch.data.FetchBooks;
 import com.example.googlebookssearch.fragments.LoadingFragment;
@@ -39,8 +40,6 @@ public class MainActivity extends AppCompatActivity
                 this, android.R.layout.simple_spinner_dropdown_item,
                 getResources().getStringArray(R.array.queryArray));
         querySelectSpinner.setAdapter(arrayAdapter);
-
-
     }
 
     //Spinner required methods

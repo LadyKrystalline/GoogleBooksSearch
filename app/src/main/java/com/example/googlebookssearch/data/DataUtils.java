@@ -141,9 +141,12 @@ class DataUtils {
                     JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
                     String coverImage = imageLinks.getString("smallThumbnail");
 
+                    //DESCRIPTION: "description" JSON String from a JSON object
+                    String description = volumeInfo.getString("description");
+
                     //create Book from JSON
                     books.add(new Book(coverImage, title,
-                            authors.getString(0), publishedDate));
+                            authors.getString(0), publishedDate, description));
 
                 } catch (Exception e){
                     e.printStackTrace();
