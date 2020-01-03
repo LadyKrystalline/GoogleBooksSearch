@@ -1,6 +1,8 @@
 package com.example.googlebookssearch;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,26 +23,32 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         // Get the transferred data from viewActivity.
-//        Intent intent = getIntent();
-//        selected = intent.getParcelableExtra(SELECTED);
-//        Log.d(TAG, "onCreate: " + selected.toString());
+        Intent intent = getIntent();
+        if (intent != null){
+            selected = (Book) intent.getSerializableExtra(SELECTED);
+            Log.d(TAG, "onCreate: " + selected.toString());
 
-        // first time
-        if(savedInstanceState == null) {
-            fragment = DetailsFragment.newInstance();
+            // first time
+            if(savedInstanceState == null) {
+                fragment = DetailsFragment.newInstance();
 
-            showDetails();
+                showDetails();
+            }
+
+
         }
+
+
 
     }
 
     private void showDetails() {
-//        DetailsFragment fragment = DetailsFragment.newInstance();
+        fragment = DetailsFragment.newInstance();
 
         Bundle bundle = new Bundle();
 
         //put your selected Book result in bundle
-//        bundle.putSerializable(SELECTED, selected);
+        bundle.putSerializable(SELECTED, selected);
         fragment.setArguments(bundle);
         //send to the Fragment
         getSupportFragmentManager().beginTransaction()
