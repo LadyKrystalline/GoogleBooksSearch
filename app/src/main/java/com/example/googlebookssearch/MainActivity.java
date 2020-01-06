@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,18 +21,21 @@ import com.example.googlebookssearch.objects.Book;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
-        implements AdapterView.OnItemSelectedListener, FetchBooks.SearchListener {
+        implements AdapterView.OnItemSelectedListener, FetchBooks.SearchListener, TextToSpeech.OnInitListener {
 
     //ArrayList of Book objects
     private ArrayAdapter<String> arrayAdapter;
+    TextToSpeech mTTS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mTTS = new TextToSpeech(this, this);
         //Spinner for Book Query selection options
         Spinner querySelectSpinner = findViewById(R.id.querySelectSpinner);
         querySelectSpinner.setOnItemSelectedListener(this);
@@ -48,6 +53,7 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.listLayout, LoadingFragment.newInstance()).commit();
         String query = arrayAdapter.getItem(i);
+        speakText(query);
         new FetchBooks(this).execute(query);
     }
 
@@ -55,7 +61,6 @@ public class MainActivity extends AppCompatActivity
     public void onNothingSelected(AdapterView<?> adapterView) {
         //if nothing is selected, do nothing.
     }
-
 
     //FetchBooks.SearchListener required methods
     @Override
@@ -94,5 +99,37 @@ public class MainActivity extends AppCompatActivity
     @Override
     public File getCacheDirectory() {
         return getCacheDir();
+    }
+
+    //Text to Speech for Titles Selected in the spinner
+    public void speakText(String text) {
+        mTTS.setPitch(1);
+        mTTS.setSpeechRate(1);
+        mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mTTS != null) {
+            mTTS.stop();
+            mTTS.shutdown();
+        }
+
+        super.onDestroy();
+    }
+
+    @Override
+    public void onInit(int status) {
+        // change required.Initialization has to finish first.
+        if (status == TextToSpeech.SUCCESS) {
+            int result = mTTS.setLanguage(Locale.ENGLISH);
+
+            if (result == TextToSpeech.LANG_MISSING_DATA
+                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "Language not supported");
+            }
+        } else {
+            Log.e("TTS", "Initialization failed");
+        }
     }
 }
