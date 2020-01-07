@@ -28,5 +28,6 @@
     <string name="yearTextViewDescription">Date Published</string>
     <string name="coverImageDescription">cover image</string>
     <string name="coverimageviewDescription">coverImageView</string>
+    <string name="searchEditTextHint">Enter Query Here</string>
 
 </resources>

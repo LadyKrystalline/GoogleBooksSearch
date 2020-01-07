@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,11 +24,13 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
-        implements AdapterView.OnItemSelectedListener, FetchBooks.SearchListener, TextToSpeech.OnInitListener {
+        implements FetchBooks.SearchListener, TextToSpeech.OnInitListener {
 
     //ArrayList of Book objects
     private ArrayAdapter<String> arrayAdapter;
     TextToSpeech mTTS;
+    EditText searchEditText;
+    Button searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,30 +38,23 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         mTTS = new TextToSpeech(this, this);
-        //Spinner for Book Query selection options
-        Spinner querySelectSpinner = findViewById(R.id.querySelectSpinner);
-        querySelectSpinner.setOnItemSelectedListener(this);
 
-        //Spinner Adapter:
-        arrayAdapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_dropdown_item,
-                getResources().getStringArray(R.array.queryArray));
-        querySelectSpinner.setAdapter(arrayAdapter);
-    }
+        //When the search Button is pressed, a query is run
 
-    //Spinner required methods
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.listLayout, LoadingFragment.newInstance()).commit();
-        String query = arrayAdapter.getItem(i);
-        speakText(query);
-        new FetchBooks(this).execute(query);
-    }
+        searchButton = findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.listLayout, LoadingFragment.newInstance()).commit();
+                String query = searchEditText.getText().toString();
+                speakText(query);
+                new FetchBooks(MainActivity.this).execute(query);
+            }
+        });
+        //EditText to enter search queries
+        searchEditText = findViewById(R.id.searchEditText);
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-        //if nothing is selected, do nothing.
     }
 
     //FetchBooks.SearchListener required methods
@@ -105,7 +100,7 @@ public class MainActivity extends AppCompatActivity
     public void speakText(String text) {
         mTTS.setPitch(1);
         mTTS.setSpeechRate(1);
-        mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        mTTS.speak(String.format("Search results for %s", text), TextToSpeech.QUEUE_FLUSH, null);
     }
 
     @Override
@@ -118,6 +113,7 @@ public class MainActivity extends AppCompatActivity
         super.onDestroy();
     }
 
+    //For TextToSpeech functionality
     @Override
     public void onInit(int status) {
         // change required.Initialization has to finish first.
