@@ -26,8 +26,11 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity
         implements FetchBooks.SearchListener, TextToSpeech.OnInitListener {
 
+    boolean isConnected = false; //no connection until the below conditions are met
+
     //ArrayList of Book objects
     private ArrayAdapter<String> arrayAdapter;
+    String query;
     TextToSpeech mTTS;
     EditText searchEditText;
     Button searchButton;
@@ -40,16 +43,15 @@ public class MainActivity extends AppCompatActivity
         mTTS = new TextToSpeech(this, this);
 
         //When the search Button is pressed, a query is run
-
         searchButton = findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.listLayout, LoadingFragment.newInstance()).commit();
-                String query = searchEditText.getText().toString();
-                speakText(query);
+                query = searchEditText.getText().toString();
                 new FetchBooks(MainActivity.this).execute(query);
+                speakText(query);
             }
         });
         //EditText to enter search queries
@@ -62,6 +64,10 @@ public class MainActivity extends AppCompatActivity
     public void OnResult(ArrayList<Book> books) {
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.listLayout, ResultsListFragment.newInstance(books)).commit();
+        if(books.size() == 0){
+            mTTS.speak("No Results Found. Please try another search.",
+                    TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 
     @Override
@@ -76,7 +82,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean hasConnection(){
-        boolean isConnected = false; //no connection until the below conditions are met
+        isConnected = false; //no connection until the below conditions are met
 
         ConnectivityManager mgr =
                 (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -86,6 +92,10 @@ public class MainActivity extends AppCompatActivity
             if(info != null){
                 isConnected = info.isConnected();
             }
+        }
+        if (!isConnected) {
+            mTTS.speak("Not Connected to the Network",
+                    TextToSpeech.QUEUE_FLUSH, null);
         }
         return isConnected;
 
@@ -100,7 +110,8 @@ public class MainActivity extends AppCompatActivity
     public void speakText(String text) {
         mTTS.setPitch(1);
         mTTS.setSpeechRate(1);
-        mTTS.speak(String.format("Search results for %s", text), TextToSpeech.QUEUE_FLUSH, null);
+        mTTS.speak(String.format("Okay! Searching for %s", text),
+                TextToSpeech.QUEUE_FLUSH, null);
     }
 
     @Override
