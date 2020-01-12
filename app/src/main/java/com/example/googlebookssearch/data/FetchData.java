@@ -7,7 +7,7 @@ import com.example.googlebookssearch.objects.Book;
 import java.io.File;
 import java.util.ArrayList;
 
-public class FetchBooks extends AsyncTask<String, Void, String> {
+public class FetchData extends AsyncTask<String, Void, String> {
 
     public interface SearchListener{
         void OnResult(ArrayList<Book> books);
@@ -18,7 +18,7 @@ public class FetchBooks extends AsyncTask<String, Void, String> {
 
     private final SearchListener listener;
 
-    public FetchBooks(SearchListener listener){
+    public FetchData(SearchListener listener){
         this.listener = listener;
     }
 
@@ -38,7 +38,7 @@ public class FetchBooks extends AsyncTask<String, Void, String> {
         }
 
 
-        String response = DataUtils.loadData(queryString);
+        String response = DataUtils.loadBookData(queryString);
         if (response != null){
             DataUtils.saveFile(file, response);
         } else {
@@ -55,7 +55,7 @@ public class FetchBooks extends AsyncTask<String, Void, String> {
             return;
         }
 
-        ArrayList<Book> books = DataUtils.parseData(s);
+        ArrayList<Book> books = DataUtils.parseBookData(s);
         if(books != null){
             this.listener.OnResult(books);
         } else {

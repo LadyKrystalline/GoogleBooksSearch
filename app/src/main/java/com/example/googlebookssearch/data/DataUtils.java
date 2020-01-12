@@ -24,6 +24,9 @@ class DataUtils {
 
     //This loads the data from a file in the local device directory
     private static final String TAG = "DataUtils.java";
+    private static final String CLIENT_ID = "790428d9452f4f34a57352bc4cae218b";
+    private static final String CLIENT_SECRET = "d80a168938b64fb1b5e1d54bf71da5d7";
+
     public static String loadFile(File file){
         if(!file.exists()){
             return null;
@@ -67,7 +70,7 @@ class DataUtils {
     }
 
     //This loads data from the API
-    public static String loadData(String query){
+    public static String loadBookData(String query){
 
         HttpURLConnection connection = null;
 
@@ -113,7 +116,100 @@ class DataUtils {
     }
 
     //Parses the JSON data into Book objects
-    public static ArrayList<Book> parseData(String data){
+    public static ArrayList<Book> parseBookData(String data){
+
+        try {
+            ArrayList<Book> books = new ArrayList<>();
+            //get JSON object
+            JSONObject jsonObject = new JSONObject(data);
+            JSONArray itemsArray = jsonObject.getJSONArray("items");
+
+            for (int i = 0; i < itemsArray.length(); i++) {
+                try {
+                    JSONObject book = itemsArray.getJSONObject(i);
+
+                    //volume info
+                    JSONObject volumeInfo = book.getJSONObject("volumeInfo");
+
+                    //TITLE: JSON String from a JSON object
+                    String title = volumeInfo.getString("title");
+
+                    //AUTHOR: JSON Array from a JSON object
+                    JSONArray authors = volumeInfo.getJSONArray("authors");
+
+                    //PUBLISHED DATE: JSON String from a JSON object
+                    String publishedDate = volumeInfo.getString("publishedDate");
+
+                    //COVER THUMBNAIL: JSON Array from a JSON object
+                    JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
+                    String coverImage = imageLinks.getString("smallThumbnail");
+
+                    //DESCRIPTION: "description" JSON String from a JSON object
+                    String description = volumeInfo.getString("description");
+
+                    //create Book from JSON
+                    books.add(new Book(coverImage, title,
+                            authors.getString(0), publishedDate, description));
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            return books;
+        } catch (JSONException e){
+            return null;
+        }
+    }
+
+    //https://api.spotify.com/v1
+    //This loads data from the API
+    public static String loadSongData(String query){
+
+        HttpURLConnection connection = null;
+
+        try {
+            String baseURL = "https://api.spotify.com/v1/search";
+
+            Uri queryURI = Uri.parse(baseURL).buildUpon()
+                    .appendQueryParameter("q", String.format("%s", query))
+                    .build();
+            URL requestURL = new URL(queryURI.toString());
+            connection = (HttpURLConnection) requestURL.openConnection();
+
+            connection.connect();
+
+            if (connection.getResponseCode() >= 300) {
+                return null;
+            }
+
+            try (BufferedReader bufferedReader =
+                         new BufferedReader(new InputStreamReader(connection.getInputStream()))){
+                //read into the string builder
+                StringBuilder stringBuilder = new StringBuilder();
+                String line;
+
+                while ((line = bufferedReader.readLine()) != null){
+                    stringBuilder.append(line);
+                    stringBuilder.append("\n");
+                }
+
+                if (stringBuilder.length() == 0){
+                    return null;
+                }
+                return stringBuilder.toString(); //returns contents of Http response
+            }
+        } catch (IOException e) {
+            return null;
+        } finally {
+            //close connection when not being used
+            if (connection != null){
+                connection.disconnect();
+            }
+        }
+    }
+
+    //Parses the JSON data into Book objects
+    public static ArrayList<Book> parseSongData(String data){
 
         try {
             ArrayList<Book> books = new ArrayList<>();

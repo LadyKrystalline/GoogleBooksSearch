@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.googlebookssearch.data.FetchBooks;
+import com.example.googlebookssearch.data.FetchData;
 import com.example.googlebookssearch.fragments.LoadingFragment;
 import com.example.googlebookssearch.fragments.ResultsListFragment;
 import com.example.googlebookssearch.objects.Book;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
-        implements FetchBooks.SearchListener, TextToSpeech.OnInitListener {
+        implements FetchData.SearchListener, TextToSpeech.OnInitListener {
 
     boolean isConnected = false; //no connection until the below conditions are met
 
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.listLayout, LoadingFragment.newInstance()).commit();
                 query = searchEditText.getText().toString();
-                new FetchBooks(MainActivity.this).execute(query);
+                new FetchData(MainActivity.this).execute(query);
                 speakText(query);
             }
         });
