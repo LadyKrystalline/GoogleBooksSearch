@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/thumbImage"
+        android:layout_width="60dp"
+        android:layout_height="100dp"
+        android:layout_weight="1"
+        android:contentDescription="@string/coverImageDescription"
+        app:srcCompat="@color/colorAccent" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            style="@style/yearTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/titleTextViewDescription"
+            android:gravity="end" />
+
+        <TextView
+            android:id="@+id/channelTextView"
+            style="@style/titleTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/channelTextViewDescription"
+            android:textAlignment="viewEnd" />
+
+        <TextView
+            android:id="@+id/releaseDateTextView"
+            style="@style/authorTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/authorTextViewDescription"
+            android:textAlignment="viewEnd" />
+    </LinearLayout>
+</LinearLayout>

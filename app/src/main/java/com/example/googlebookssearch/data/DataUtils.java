@@ -4,6 +4,9 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.example.googlebookssearch.objects.Book;
+import com.example.googlebookssearch.objects.YTVideo;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,11 +22,23 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 class DataUtils {
 
     //This loads the data from a file in the local device directory
     private static final String TAG = "DataUtils.java";
+
+
+    private static final String CLIENT_SECRETS= "client_secret.json";
+    private static final Collection<String> SCOPES =
+            Arrays.asList("https://www.googleapis.com/auth/youtube.force-ssl");
+
+    private static final String APPLICATION_NAME = "API code samples";
+    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+
+
     private static final String CLIENT_ID = "790428d9452f4f34a57352bc4cae218b";
     private static final String CLIENT_SECRET = "d80a168938b64fb1b5e1d54bf71da5d7";
 
@@ -161,17 +176,25 @@ class DataUtils {
         }
     }
 
-    //https://api.spotify.com/v1
+    //https://developers.google.com/apis-explorer/#p/youtube/v3/youtube.search.list?
+    //        part=snippet
+    //        &order=viewCount
+    //        &q=skateboarding+dog
+    //        &type=video
+    //        &videoDefinition=high
+
     //This loads data from the API
-    public static String loadSongData(String query){
+    public static String loadVideoData(String query){
 
         HttpURLConnection connection = null;
 
         try {
-            String baseURL = "https://api.spotify.com/v1/search";
+            String baseURL =
+                "https://developers.google.com/apis-explorer/#p/youtube/v3/youtube.search.list?" +
+                        "part=snippet&order=viewCount";
 
             Uri queryURI = Uri.parse(baseURL).buildUpon()
-                    .appendQueryParameter("q", String.format("%s", query))
+                    .appendQueryParameter("q", String.format("%s&type=video", query))
                     .build();
             URL requestURL = new URL(queryURI.toString());
             connection = (HttpURLConnection) requestURL.openConnection();
@@ -208,21 +231,22 @@ class DataUtils {
         }
     }
 
-    //Parses the JSON data into Book objects
-    public static ArrayList<Book> parseSongData(String data){
+//
+//    //Parses the JSON data into YTVideo objects
+    public static ArrayList<YTVideo> parseVideoData(String data){
 
         try {
-            ArrayList<Book> books = new ArrayList<>();
+            ArrayList<YTVideo> videos = new ArrayList<>();
             //get JSON object
             JSONObject jsonObject = new JSONObject(data);
             JSONArray itemsArray = jsonObject.getJSONArray("items");
 
             for (int i = 0; i < itemsArray.length(); i++) {
                 try {
-                    JSONObject book = itemsArray.getJSONObject(i);
+                    JSONObject video = itemsArray.getJSONObject(i);
 
                     //volume info
-                    JSONObject volumeInfo = book.getJSONObject("volumeInfo");
+                    JSONObject volumeInfo = video.getJSONObject("volumeInfo");
 
                     //TITLE: JSON String from a JSON object
                     String title = volumeInfo.getString("title");
@@ -240,19 +264,20 @@ class DataUtils {
                     //DESCRIPTION: "description" JSON String from a JSON object
                     String description = volumeInfo.getString("description");
 
-                    //create Book from JSON
-                    books.add(new Book(coverImage, title,
-                            authors.getString(0), publishedDate, description));
+                    //TODO: create YTVideo from JSON
+//                    videos.add(new Book(coverImage, title,
+//                            authors.getString(0), publishedDate, description));
 
                 } catch (Exception e){
                     e.printStackTrace();
                 }
             }
-            return books;
+            return videos;
         } catch (JSONException e){
             return null;
         }
     }
+
 
 
 }

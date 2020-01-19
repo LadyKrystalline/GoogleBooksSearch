@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">GoogleBooksSearch</string>
 
+    <string name="youTubeAPI">AIzaSyBed2Mb3-dQRLppIlgt0Pr5O4otlBB6MB8</string>
+
     <string name="emptyStateDescription">List is Empty.</string>
     <string name="noQueriesText">Please select a query from the dropdown menu above to view a
         list of results.</string>
@@ -29,5 +31,6 @@
     <string name="coverImageDescription">cover image</string>
     <string name="coverimageviewDescription">coverImageView</string>
     <string name="searchEditTextHint">Enter Query Here</string>
+    <string name="channelTextViewDescription">channel where this video can be found</string>
 
 </resources>

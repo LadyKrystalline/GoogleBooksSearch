@@ -16,22 +16,22 @@ import com.example.googlebookssearch.R;
 import java.util.Collections;
 import java.util.List;
 
-public class BookAdapter extends BaseAdapter {
+public class YTVideoAdapter extends BaseAdapter {
 
-    private static final String TAG = "BookAdapter";
-    private final List<Book> list;
+    private static final String TAG = "YTVideoAdapter";
+    private final List<YTVideo> list;
     private final LayoutInflater mInflater;
     Context context; //context
 
     //ViewHolder added as a static inner class
     static class ViewHolder {
-        ImageView coverImage;
+        ImageView thumbImage;
         TextView titleView;
-        TextView authorView;
-        TextView yearView;
+        TextView channelView;
+        TextView releaseDateView;
     }
 
-    public BookAdapter(Context context, List<Book> list) {
+    public YTVideoAdapter(Context context, List<YTVideo> list) {
         this.context = context;
         //If the list is empty, just return an empty list so the list won't be null
         if (list.isEmpty()){
@@ -53,7 +53,7 @@ public class BookAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return list.get(position); //item at position
+        return null;
     }
 
     @Override
@@ -63,28 +63,27 @@ public class BookAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         //ViewHolder pattern
-        BookAdapter.ViewHolder holder;
+        YTVideoAdapter.ViewHolder holder;
 
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.book_item_view, parent, false);
             convertView.setBackgroundResource(R.drawable.background_view);
-            holder = new BookAdapter.ViewHolder();
-            holder.coverImage = convertView.findViewById(R.id.coverImage);
+            holder = new YTVideoAdapter.ViewHolder();
+            holder.thumbImage = convertView.findViewById(R.id.thumbImage);
             holder.titleView = convertView.findViewById(R.id.titleTextView);
-            holder.authorView = convertView.findViewById(R.id.authorTextView);
-            holder.yearView = convertView.findViewById(R.id.yearTextView);
+            holder.channelView = convertView.findViewById(R.id.channelTextView);
+            holder.releaseDateView = convertView.findViewById(R.id.releaseDateTextView);
             convertView.setTag(holder);
         } else {
-            holder = (BookAdapter.ViewHolder) convertView.getTag();
+            holder = (YTVideoAdapter.ViewHolder) convertView.getTag();
         }
 
         //Book object properties used to populate each list item in the Grid
-        Book book = list.get(position);
+        YTVideo ytVideo = list.get(position);
 
         //changes the image URL to https from http in order to display
-        String httpsString = book.getCoverImage();
+        String httpsString = ytVideo.getThumbnail();
         httpsString = httpsString.replace("http", "https");
 
         //RequestOptions formats the imageView for the cover image
@@ -93,16 +92,18 @@ public class BookAdapter extends BaseAdapter {
                 .placeholder(R.mipmap.ic_launcher_round)
                 .error(R.color.colorAccent);
 
-        //load the imageView for the cover image in the item view
+        //load the imageView for the thumbnail image in the item view
         Glide.with(context)
                 .load(httpsString)
                 .override(100, 100)
                 .apply(options)
-                .into(holder.coverImage);
-        holder.titleView.setText(book.getTitle());
-        holder.authorView.setText(book.getAuthor());
-        holder.yearView.setText(book.getPublishDate());
-        Log.d(TAG, "getView: " + book.getCoverImage());
+                .into(holder.thumbImage);
+        holder.titleView.setText(ytVideo.getTitle());
+        holder.channelView.setText(ytVideo.getChannel());
+        holder.releaseDateView.setText(ytVideo.getReleaseDate());
+        Log.d(TAG, "getView: " + ytVideo.getThumbnail());
         return convertView;
     }
+
+
 }
