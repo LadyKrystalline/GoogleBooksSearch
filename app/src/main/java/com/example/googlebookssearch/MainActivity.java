@@ -6,8 +6,9 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,13 +24,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
+//TODO: menu won't slide out for this version yet
+//TODO: hide YouTube API key
 public class MainActivity extends AppCompatActivity
         implements FetchData.SearchListener, TextToSpeech.OnInitListener {
 
+
     boolean isConnected = false; //no connection until the below conditions are met
 
-    //ArrayList of Book objects
-    private ArrayAdapter<String> arrayAdapter;
+    //ArrayList of Book or Video objects
     String query;
     TextToSpeech mTTS;
     EditText searchEditText;
@@ -40,6 +43,18 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+//        AppBarConfiguration appBarConfiguration =
+//                new AppBarConfiguration.Builder(navController.getGraph()).build();
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        NavigationUI.setupWithNavController(toolbar, navController);
+//
+//
+//        AppBarConfiguration appBarConfiguration =
+//                new AppBarConfiguration.Builder(navController.getGraph())
+//                        .setDrawerLayout(drawerLayout)
+//                        .build();
+
         mTTS = new TextToSpeech(this, this);
 
         //When the search Button is pressed, a query is run
@@ -47,17 +62,42 @@ public class MainActivity extends AppCompatActivity
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.listLayout, LoadingFragment.newInstance()).commit();
-                query = searchEditText.getText().toString();
-                new FetchData(MainActivity.this).execute(query);
-                speakText(query);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.listLayout, LoadingFragment.newInstance()).commit();
+            query = searchEditText.getText().toString();
+            new FetchData(MainActivity.this).execute(query);
+            speakText(query);
             }
         });
+
         //EditText to enter search queries
         searchEditText = findViewById(R.id.searchEditText);
-
     }
+
+    //Menu to switch between Book or Video Search:
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_side, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.nav_books) {
+            query = searchEditText.getText().toString();
+            searchBooks(query);
+            return true;
+        }
+
+        if (item.getItemId() == R.id.nav_videos) {
+//            query = searchEditText.getText().toString();
+//            searchVideos(query);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     //FetchBooks.SearchListener required methods
     @Override
@@ -98,7 +138,6 @@ public class MainActivity extends AppCompatActivity
                     TextToSpeech.QUEUE_FLUSH, null);
         }
         return isConnected;
-
     }
 
     @Override
@@ -138,5 +177,40 @@ public class MainActivity extends AppCompatActivity
         } else {
             Log.e("TTS", "Initialization failed");
         }
+    }
+
+    //This function populates Book results.
+    private void searchBooks(final String userQuery){
+        mTTS = new TextToSpeech(this, this);
+
+        //When the search Button is pressed, a query is run
+        searchButton = findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.listLayout, LoadingFragment.newInstance()).commit();
+//                query = searchEditText.getText().toString();
+                new FetchData(MainActivity.this).execute(userQuery);
+                speakText(userQuery);
+            }
+        });
+    }
+    //This function populates Video results.
+    private void searchVideos(final String userQuery){
+        mTTS = new TextToSpeech(this, this);
+
+        //When the search Button is pressed, a query is run
+        searchButton = findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.listLayout, LoadingFragment.newInstance()).commit();
+//                query = searchEditText.getText().toString();
+                new FetchData(MainActivity.this).execute(userQuery);
+                speakText(userQuery);
+            }
+        });
     }
 }

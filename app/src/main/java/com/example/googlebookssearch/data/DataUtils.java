@@ -7,6 +7,7 @@ import com.example.googlebookssearch.objects.Book;
 import com.example.googlebookssearch.objects.YTVideo;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.DateTime;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -179,9 +180,8 @@ class DataUtils {
     //https://developers.google.com/apis-explorer/#p/youtube/v3/youtube.search.list?
     //        part=snippet
     //        &order=viewCount
-    //        &q=skateboarding+dog
+    //        &q=[query]
     //        &type=video
-    //        &videoDefinition=high
 
     //This loads data from the API
     public static String loadVideoData(String query){
@@ -231,8 +231,7 @@ class DataUtils {
         }
     }
 
-//
-//    //Parses the JSON data into YTVideo objects
+    //Parses the JSON data into YTVideo objects
     public static ArrayList<YTVideo> parseVideoData(String data){
 
         try {
@@ -245,28 +244,30 @@ class DataUtils {
                 try {
                     JSONObject video = itemsArray.getJSONObject(i);
 
-                    //volume info
-                    JSONObject volumeInfo = video.getJSONObject("volumeInfo");
+                    //snippet info
+                    JSONObject snippet = video.getJSONObject("snippet");
 
                     //TITLE: JSON String from a JSON object
-                    String title = volumeInfo.getString("title");
+                    String title = snippet.getString("title");
 
-                    //AUTHOR: JSON Array from a JSON object
-                    JSONArray authors = volumeInfo.getJSONArray("authors");
+                    //CHANNEL: JSON Array from a JSON object
+                    String channel = snippet.getString("channelTitle");
 
-                    //PUBLISHED DATE: JSON String from a JSON object
-                    String publishedDate = volumeInfo.getString("publishedDate");
+                    //RELEASE DATE: JSON String from a JSON object
+                    DateTime releaseDate =
+                            DateTime.parseRfc3339(snippet.get("publishedAt").toString());
 
-                    //COVER THUMBNAIL: JSON Array from a JSON object
-                    JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
-                    String coverImage = imageLinks.getString("smallThumbnail");
+                    //VIDEO THUMBNAIL: JSON Array from a JSON object
+                    JSONObject thumbnails = snippet.getJSONObject("thumbnails");
+                    JSONObject key = thumbnails.getJSONObject("default");
+                    String thumbImage = key.getString("url");
 
-                    //DESCRIPTION: "description" JSON String from a JSON object
-                    String description = volumeInfo.getString("description");
+                    //VIDEO LENGTH: "videoLength" JSON String from a JSON object
+                    String description = snippet.getString("description");
 
-                    //TODO: create YTVideo from JSON
-//                    videos.add(new Book(coverImage, title,
-//                            authors.getString(0), publishedDate, description));
+                    //Create YTVideo from JSON
+                    videos
+                        .add(new YTVideo(thumbImage, title, channel, releaseDate.toStringRfc3339(), description));
 
                 } catch (Exception e){
                     e.printStackTrace();

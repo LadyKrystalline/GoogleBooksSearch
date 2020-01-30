@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">GoogleBooksSearch</string>
 
-    <string name="youTubeAPI">AIzaSyBed2Mb3-dQRLppIlgt0Pr5O4otlBB6MB8</string>
+    <!--<string name="youTube">somethin-AIzaSyBed2Mb3-dQRLppIlgt0Pr5O4otlBB6MB8</string>-->
 
     <string name="emptyStateDescription">List is Empty.</string>
     <string name="noQueriesText">Please select a query from the dropdown menu above to view a
@@ -16,6 +16,9 @@
         <item>@string/fourthQuery</item>
         <item>@string/fifthQuery</item>
     </string-array>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!--Strings for the pre-defined queries-->
     <string name="firstQuery">Calculus</string>
@@ -32,5 +35,7 @@
     <string name="coverimageviewDescription">coverImageView</string>
     <string name="searchEditTextHint">Enter Query Here</string>
     <string name="channelTextViewDescription">channel where this video can be found</string>
+    <string name="nav_books_text">Search for Books</string>
+    <string name="nav_videos_text">Search for YouTube Vids</string>
 
 </resources>
